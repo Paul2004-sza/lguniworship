@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LG Uni Life Group</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, h2, h3, h4, .logo-text {
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-frame {
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-frame img {
+            transition: transform 0.5s ease;
+        }
+
+        .photo-frame:hover img {
+            transform: scale(1.05);
+        }
+
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm z-40 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <!-- Your logo with p1.png -->
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg overflow-hidden">
+                        <img src="image/p1.png" alt="LG Uni Logo" class="w-full h-full object-cover">
+                    </div>
+                    <span class="font-bold text-xl gradient-text">LG Uni</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <!-- Home link with subtle blue background -->
+                    <a href="#home" class="px-3 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium transition hover:bg-blue-100">
+                        Home
+                    </a>
+                    <a href="#photos" class="text-gray-700 hover:text-blue-600 font-medium transition">Photos</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600 font-medium transition">About</a>
+                    <a href="#join" class="text-gray-700 hover:text-blue-600 font-medium transition">Join Us</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600 font-medium transition">Contact</a>
+                    <!-- Back to Worship button -->
+                    <a href="index.html" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-gray-800 transition font-medium">
+                        Worship
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <div class="px-4 py-6 space-y-4">
+                <!-- Home link in mobile menu with blue background -->
+                <a href="#home" class="block px-4 py-3 bg-blue-50 text-blue-600 font-medium rounded-lg transition">
+                    Home
+                </a>
+                <a href="#photos" class="block text-gray-700 hover:text-blue-600 font-medium transition py-2">Photos</a>
+                <a href="#about" class="block text-gray-700 hover:text-blue-600 font-medium transition py-2">About</a>
+                <a href="#join" class="block text-gray-700 hover:text-blue-600 font-medium transition py-2">Join Us</a>
+                <a href="#contact" class="block text-gray-700 hover:text-blue-600 font-medium transition py-2">Contact</a>
+                <a href="index.html" class="block px-4 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 text-gray-800 transition font-medium text-center mt-4">
+                    Back to Worship
+                </a>
+                <div class="pt-4 flex space-x-4">
+                    <a href="https://www.facebook.com/actsofchrist" target="_blank" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="mailto:kbuchristiangroup@gmail.com" class="bg-red-500 text-white p-3 rounded-full hover:bg-red-600 transition">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="relative bg-gradient-to-br from-blue-50 to-blue-100 text-gray-800 pt-24 pb-20 overflow-hidden">
+        <!-- Background pattern -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-10 left-10 w-40 h-40 rounded-full bg-blue-200"></div>
+            <div class="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-blue-300"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center justify-between">
+                <div class="lg:w-1/2 text-center lg:text-left mb-10 lg:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Welcome to <span class="text-blue-700">LG Uni!</span></h1>
+                    <p class="text-xl mb-8 text-blue-800">Life Group for university students at Acts of Christ Church</p>
+                    <p class="text-lg mb-10 max-w-xl text-gray-700">A community where faith, friendship, and fun come together. Join us as we grow in Christ and build lasting relationships!</p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#join" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-8 rounded-full hover:shadow-xl transition duration-300 shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-users"></i> Join Our Community
+                        </a>
+                        <a href="#photos" class="bg-white border-2 border-blue-600 text-blue-700 font-bold py-3 px-8 rounded-full hover:bg-blue-50 transition duration-300 flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fas fa-images"></i> See Our Gallery
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="w-72 h-72 md:w-96 md:h-96 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full flex items-center justify-center floating-animation">
+                            <div class="w-64 h-64 md:w-80 md:h-80 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
+                                <div class="relative">
+                                    <div class="absolute -top-4 -left-4 w-20 h-20 bg-blue-300 rounded-full"></div>
+                                    <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-400 rounded-full"></div>
+                                    <div class="flex gap-4">
+                                        <a href="https://www.facebook.com/actsofchrist" target="_blank" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 border-4 border-white">
+                                            <img src="image/p2.png" alt="LG Uni Logo" class="w-full h-full object-cover">
+                                        </a>
+                                        <a href="https://www.facebook.com/profile.php?id=100089360576302" target="_blank" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 mt-8 border-4 border-white">
+                                            <img src="image/p1.png" alt="LG Uni Secondary Image" class="w-full h-full object-cover">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+            <a href="#photos" class="text-blue-600 hover:text-blue-800 transition">
+                <i class="fas fa-chevron-down text-2xl animate-bounce"></i>
+            </a>
+        </div>
+    </header>
+    <!-- Photo Gallery Section -->
+    <section id="photos" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title text-gray-800">Our Life Group Moments</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">Capturing the joy, faith, and fellowship that define our community</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Photo 1 -->
+                <div class="fade-in card-hover photo-frame bg-gradient-to-br from-blue-50 to-white">
+                    <div class="overflow-hidden h-64">
+                        <img src="image/photo1.png" alt="LG Group at Acts of Christ Church" class="w-full h-full object-cover" onclick="openPhoto('image/photo1.png')">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white mr-3">
+                                <i class="fas fa-church"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-blue-800">Our LG Family</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Smiles, friendship, and faith! Gathered at Acts of Christ Church, we laugh, pray, and grow together.</p>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="text-sm text-blue-700 italic">
+                                <i class="fas fa-quote-left mr-2"></i>
+                                "As iron sharpens iron, so one person sharpens another."
+                                <span class="block text-right mt-1 text-blue-600">– Proverbs 27:17</span>
+                            </p>
+                        </div>
+                        <button onclick="openPhoto('image/photo1.png')" class="mt-4 w-full py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">
+                            View Full Photo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Photo 2 -->
+                <div class="fade-in card-hover photo-frame bg-gradient-to-br from-green-50 to-white">
+                    <div class="overflow-hidden h-64">
+                        <img src="image/photo2.png" alt="LG Uni at Neverfall Camp, Khao Yai" class="w-full h-full object-cover" onclick="openPhoto('image/photo2.png')">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-teal-500 flex items-center justify-center text-white mr-3">
+                                <i class="fas fa-campground"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-green-800">Adventure & Fellowship</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Exploring God's beautiful creation at Neverfall Camp! Fun activities, team games, and spiritual growth await.</p>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-sm text-green-700 italic">
+                                <i class="fas fa-quote-left mr-2"></i>
+                                "Let everything that has breath praise the Lord!"
+                                <span class="block text-right mt-1 text-green-600">– Psalm 150:6</span>
+                            </p>
+                        </div>
+                        <button onclick="openPhoto('image/photo2.png')" class="mt-4 w-full py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition">
+                            View Full Photo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Photo 3 -->
+                <div class="fade-in card-hover photo-frame bg-gradient-to-br from-purple-50 to-white">
+                    <div class="overflow-hidden h-64">
+                        <img src="image/photo3.png" alt="LG Uni at Neverfall Camp, Khao Yai" class="w-full h-full object-cover" onclick="openPhoto('image/photo3.png')">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white mr-3">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-purple-800">Friendship & Faith</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Making lifelong friends while growing in Christ. Come join the joy, laughter, and meaningful conversations!</p>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <p class="text-sm text-purple-700 italic">
+                                <i class="fas fa-quote-left mr-2"></i>
+                                "Therefore encourage one another and build each other up."
+                                <span class="block text-right mt-1 text-purple-600">– 1 Thessalonians 5:11</span>
+                            </p>
+                        </div>
+                        <button onclick="openPhoto('image/photo3.png')" class="mt-4 w-full py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition">
+                            View Full Photo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title gradient-text">LG Uni! "Grow together in Christ."</h2>
+                <p class="text-gray-700 max-w-3xl mx-auto">A vibrant community where university students can grow in faith, build friendships, and discover God's purpose for their lives.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
+                <div class="md:flex">
+                    <div class="md:w-2/3 p-8 md:p-12">
+                        <h3 class="text-2xl font-bold mb-6 text-blue-800">What We're About</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-laugh-beam text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-800 mb-2">🎉 Laugh Together</h4>
+                                    <p class="text-gray-600">Fun games, campfires, and unforgettable moments that create lasting memories and genuine connections.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-pray text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-800 mb-2">🙏 Grow Spiritually</h4>
+                                    <p class="text-gray-600">Dive into God's Word, share prayers, and support each other in our spiritual journeys through life's ups and downs.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-user-friends text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-800 mb-2">🤝 Make Friends for Life</h4>
+                                    <p class="text-gray-600">Meet students who genuinely care, encourage, and walk with Christ alongside you through university life and beyond.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-gift text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-800 mb-2">🌟 Discover Your Gifts</h4>
+                                    <p class="text-gray-600">Learn, serve, and shine in God's unique plan for your life as you discover and develop your God-given talents.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-10 bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl">
+                            <p class="text-lg text-gray-700 italic text-center">
+                                <i class="fas fa-quote-left text-blue-400 mr-2"></i>
+                                "For where two or three gather in my name, there am I with them."
+                                <span class="block mt-2 font-semibold text-blue-600">– Matthew 18:20</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="md:w-1/3 bg-gradient-to-b from-blue-600 to-purple-700 p-8 md:p-12 text-white flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold mb-6">Stay Connected</h3>
+                        <p class="mb-6">Join our community and be part of something special!</p>
+
+                        <div class="space-y-4">
+                            <a href="https://www.facebook.com/profile.php?id=100089360576302" target="_blank" class="flex items-center bg-white/20 hover:bg-white/30 p-4 rounded-xl transition">
+                                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-600 mr-4">
+                                    <i class="fab fa-facebook-f"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">LG Uni Facebook</p>
+                                    <p class="text-sm opacity-80">Follow our updates & events</p>
+                                </div>
+                            </a>
+
+                            <a href="mailto:kbuchristiangroup@gmail.com" class="flex items-center bg-white/20 hover:bg-white/30 p-4 rounded-xl transition">
+                                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-red-500 mr-4">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Email Us</p>
+                                    <p class="text-sm opacity-80">kbuchristiangroup@gmail.com</p>
+                                </div>
+                            </a>
+
+                            <a href="https://www.facebook.com/actsofchrist" target="_blank" class="flex items-center bg-white/20 hover:bg-white/30 p-4 rounded-xl transition">
+                                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-500 mr-4">
+                                    <i class="fas fa-church"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Acts of Christ Church</p>
+                                    <p class="text-sm opacity-80">Our home church</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section with QR Code -->
+    <section id="join" class="py-16 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title text-green-700">Join Our LINE Group!</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Scan the QR code below to stay connected with LG Uni on LINE. Get updates, join discussions, and be part of our vibrant community!</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-12 fade-in">
+                <div class="lg:w-1/2 text-center lg:text-left">
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 p-8 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-6 text-green-800">Why Join Our LINE Group?</h3>
+
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white mr-3 mt-1">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-gray-700">Get instant updates about meetings, events, and activities</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white mr-3 mt-1">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-gray-700">Connect with other university students in our community</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white mr-3 mt-1">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-gray-700">Share prayer requests and encouragement</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white mr-3 mt-1">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-gray-700">Receive daily inspiration and Bible verses</p>
+                            </li>
+                        </ul>
+
+                        <p class="text-gray-600 italic text-center">
+                            <i class="fas fa-quote-left text-green-400 mr-2"></i>
+                            "Stay connected, grow together."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-green-400 to-emerald-600 p-8 rounded-2xl shadow-2xl transform hover:scale-105 transition duration-500">
+                            <div class="bg-white p-6 rounded-xl shadow-inner">
+                                <div class="text-center mb-6">
+                                    <h4 class="text-2xl font-bold text-green-800 mb-2">Scan to Join</h4>
+                                    <p class="text-gray-600">Use your LINE app to scan this QR code</p>
+                                </div>
+
+                                <div class="flex justify-center mb-6">
+                                    <div class="relative">
+                                        <div class="w-64 h-64 bg-gradient-to-r from-green-100 to-emerald-200 rounded-lg flex items-center justify-center p-4">
+                                            <img src="image/p3.png" alt="LINE QR Code" class="w-full h-full object-contain rounded-lg" id="qrImage" onclick="openPhoto('image/p3.png')">
+                                        </div>
+                                        <div class="absolute -top-4 -right-4 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg">
+                                            <i class="fab fa-line text-xl"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <p class="text-gray-600 mb-4">Can't scan the QR code?</p>
+                                    <button onclick="openPhoto('image/p3.png')" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-3 px-8 rounded-full hover:shadow-xl transition duration-300 shadow-lg flex items-center justify-center gap-2 mx-auto">
+                                        <i class="fas fa-qrcode"></i> View QR Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Decorative elements -->
+                        <div class="absolute -top-4 -left-4 w-8 h-8 bg-yellow-400 rounded-full"></div>
+                        <div class="absolute -bottom-4 -right-4 w-12 h-12 bg-blue-400 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-heart text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">LG Uni Life Group</h3>
+                            <p class="text-gray-300">Acts of Christ Church, Minburi Bangkok</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 max-w-md">A vibrant community of university students growing in faith, friendship, and purpose together in Christ.</p>
+                </div>
+
+                <div class="text-center md:text-right">
+                    <h4 class="text-xl font-bold mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4 mb-6 justify-center md:justify-end">
+                        <a href="https://www.facebook.com/actsofchrist" target="_blank" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="mailto:kbuchristiangroup@gmail.com" class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#join" class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white hover:bg-green-600 transition">
+                            <i class="fab fa-line"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">
+                        <i class="fas fa-map-marker-alt mr-2"></i> Acts of Christ Church, Minburi Bangkok
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 LG Uni Life Group. All rights reserved.</p>
+                <p class="mt-2">"Therefore encourage one another and build each other up." – 1 Thessalonians 5:11</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition duration-300 opacity-0 transform translate-y-10 z-30">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Fullscreen Photo Viewer -->
+    <div id="photoViewer" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center hidden z-50 p-4">
+        <div class="relative max-w-4xl max-h-full">
+            <img id="viewerImage" src="" class="max-w-full max-h-full rounded-lg shadow-2xl">
+            <button onclick="closePhoto()" class="absolute -top-12 right-0 text-white text-4xl font-bold hover:text-gray-300 transition">✕</button>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Back to top button
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'translate-y-10');
+                backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+            } else {
+                backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+                backToTopBtn.classList.add('opacity-0', 'translate-y-10');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Fade-in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', fadeInOnScroll);
+        // Initial check
+        fadeInOnScroll();
+
+        // Photo viewer functions
+        function openPhoto(src) {
+            document.getElementById('viewerImage').src = src;
+            document.getElementById('photoViewer').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closePhoto() {
+            document.getElementById('photoViewer').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }
+
+        // Close photo viewer when clicking outside the image
+        document.getElementById('photoViewer').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePhoto();
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

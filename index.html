@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Worship Lyrics App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('image/bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* Overlay for better text readability */
+        .content-overlay {
+            background-color: rgba(240, 248, 255, 0.92);
+            min-height: 100vh;
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 640px) {
+            .content-overlay {
+                background-color: rgba(240, 248, 255, 0.95);
+            }
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+    <!-- Background overlay for content -->
+    <div class="content-overlay">
+
+    <!-- Header -->
+    <div class="p-6 text-center">
+        <h1 class="text-3xl font-bold text-sky-800">Worship & Praise Songs</h1>
+        <p class="text-sky-600">Search or tap a song to view lyrics</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="flex justify-center px-4 mb-4">
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Search songs..."
+            class="w-full max-w-xl p-3 text-gray-800 bg-white border-2 border-sky-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-400"
+        />
+    </div>
+
+    <!-- Search Results -->
+    <div id="searchResults" class="mt-4 px-4 max-w-2xl mx-auto"></div>
+
+    <!-- Buttons to toggle lists -->
+    <div class="flex justify-center gap-4 mb-6">
+        <button id="showWorship" class="px-6 py-2 bg-sky-100 text-sky-800 border border-sky-300 rounded-lg hover:bg-sky-200 hover:border-sky-400 transition-all duration-200 shadow-sm">
+            Worship Songs
+        </button>
+        <button id="showPraise" class="px-6 py-2 bg-blue-50 text-blue-800 border border-blue-300 rounded-lg hover:bg-blue-100 hover:border-blue-400 transition-all duration-200 shadow-sm">
+            Praise Songs
+        </button>
+    </div>
+    <!-- Song Lists -->
+    <div class="max-w-3xl mx-auto mt-8 px-4">
+
+        <div id="worshipContainer" class="hidden">
+            <h2 class="text-2xl font-bold mb-3 text-sky-800">WORSHIP SONGS</h2>
+            <ul id="worshipList" class="space-y-2"></ul>
+        </div>
+
+        <div id="praiseContainer" class="hidden">
+            <h2 class="text-2xl font-bold mt-10 mb-3 text-blue-800">PRAISE SONGS</h2>
+            <ul id="praiseList" class="space-y-2"></ul>
+        </div>
+
+    </div>
+
+    <!-- Footer Section -->
+    <div class="max-w-3xl mx-auto px-4 py-10 text-center">
+
+        <!-- Bible Verse Carousel -->
+        <div id="bibleVerse" class="min-h-[120px] flex flex-col items-center justify-center">
+            <div class="verse-container relative">
+                <p class="text-sky-700 mb-2 italic">
+                    Come, let us bow down in worship. <br>
+                    Let us kneel before the Lord our Maker. <br>
+                    He is our God, and we are His people.
+                </p>
+                <p class="text-sky-600 mb-4 italic">
+                    — Psalm 95:6-7
+                </p>
+            </div>
+
+            <!-- Navigation Dots -->
+            <div class="flex justify-center space-x-2 mt-2">
+                <button class="verse-dot w-2 h-2 bg-sky-400 rounded-full" data-index="0"></button>
+                <button class="verse-dot w-2 h-2 bg-sky-200 rounded-full" data-index="1"></button>
+                <button class="verse-dot w-2 h-2 bg-sky-200 rounded-full" data-index="2"></button>
+            </div>
+        </div>
+
+        <div class="mt-8 mb-4">
+            <!-- LG Uni Button -->
+            <a href="lguni.html" class="inline-block px-6 py-2 bg-sky-100 text-sky-800 border border-sky-300 rounded-lg hover:bg-sky-200 hover:border-sky-400 transition-all duration-200 shadow-sm">
+                LG Uni
+            </a>
+        </div>
+
+        <!-- Collected By Text -->
+        <p class="text-sky-600 mt-4 text-sm">
+            Collected and made accessible online by
+            <a href="https://paul2004-sza.github.io/szaportfolio/" target="_blank" class="text-sky-700 underline hover:text-sky-800">
+                Sut Zaw Aung
+            </a>.
+        </p>
+
+    </div>
+    </div> <!-- End content overlay -->
+
+<script>
+// Bible verses array
+const bibleVerses = [
+    {
+        text: `Come, let us bow down in worship. <br>
+               Let us kneel before the Lord our Maker. <br>
+               He is our God, and we are His people.`,
+        reference: "— Psalm 95:6-7"
+    },
+    {
+        text: `I will give thanks to you, Lord, with all my heart; <br>
+               I will tell of all your wonderful deeds. <br>
+               I will be glad and rejoice in you;`,
+        reference: "— Psalm 9:1-2"
+    },
+    {
+        text: `Let the word of Christ dwell in you richly <br>
+               as you teach and admonish one another with all wisdom, <br>
+               and as you sing psalms, hymns and spiritual songs.`,
+        reference: "— Colossians 3:16"
+    }
+];
+
+let currentVerseIndex = 0;
+const verseContainer = document.querySelector('.verse-container');
+const dots = document.querySelectorAll('.verse-dot');
+
+function showVerse(index) {
+    currentVerseIndex = index;
+    const verse = bibleVerses[currentVerseIndex];
+
+    verseContainer.innerHTML = `
+        <p class="text-sky-700 mb-2 italic">${verse.text}</p>
+        <p class="text-sky-600 mb-4 italic">${verse.reference}</p>
+    `;
+
+    // Update dots
+    dots.forEach((dot, i) => {
+        if (i === currentVerseIndex) {
+            dot.classList.remove('bg-sky-200');
+            dot.classList.add('bg-sky-400');
+        } else {
+            dot.classList.remove('bg-sky-400');
+            dot.classList.add('bg-sky-200');
+        }
+    });
+}
+
+function showNextVerse() {
+    const nextIndex = (currentVerseIndex + 1) % bibleVerses.length;
+    showVerse(nextIndex);
+}
+
+// Add click events to dots
+dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+        showVerse(parseInt(dot.getAttribute('data-index')));
+    });
+});
+
+// Change verse every 30 seconds (30000 milliseconds)
+setInterval(showNextVerse, 30000);
+</script>
+
+<script>
+const songs = [
+    // worship songs
+    { title: "Above All", file: "AboveAll.html", type: "worship" },
+    { title: "Angels", file: "Angels.html", type: "worship" },
+    { title: "Our Father - Don Moen", file: "DM_OurFather.html", type: "worship" },
+    { title: "Thank You Lord", file: "ThankYouLord.html", type: "praise" },
+    { title: "Angels We Have Heard On High", file: "AngelsWeHaveHeardOnHigh.html", type: "worship" },
+    { title: "As The Deer", file: "AsTheDeer.html", type: "worship" },
+    { title: "Awesome God", file: "AwesomeGod.html", type: "worship" },
+    { title: "Be Magnified", file: "BeMagnified.html", type: "worship" },
+    { title: "Because He Lives", file: "BecauseHeLives.html", type: "worship" },
+    { title: "Been So Good", file: "BeenSoGood.html", type: "worship" },
+    { title: "Blessed Assurance", file: "BlessedAssurance.html", type: "worship" },
+    { title: "Breathe", file: "Breathe.html", type: "worship" },
+    { title: "Build My Life", file: "BuildMyLife.html", type: "worship" },
+    { title: "Champion", file: "Champion.html", type: "worship" },
+    { title: "Christ Is Enough", file: "ChristIsEnough.html", type: "worship" },
+    { title: "Come Thou Fount", file: "ComeThouFount.html", type: "worship" },
+    { title: "Draw Me Close", file: "DrawMeClose.html", type: "worship" },
+    { title: "Goodbye Yesterday", file: "GoodbyeYesterday.html", type: "worship" },
+    { title: "Firm Foundation", file: "FirmFoundation.html", type: "worship" },
+    { title: "Give Thanks", file: "GiveThanks.html", type: "worship" },
+    { title: "Goodness Of God", file: "GoodnessOfGod.html", type: "worship" },
+    { title: "Gratitude", file: "Gratitude.html", type: "worship" },
+    { title: "Great Is", file: "GreatIs.html", type: "worship" },
+    { title: "He Who Is To Come", file: "HeWhoIsToCome.html", type: "worship" },
+    { title: "Here I Am To Worship", file: "HereIAmToWorship.html", type: "worship" },
+    { title: "Holy Forever", file: "HolyForever.html", type: "worship" },
+    { title: "Holy Spirit", file: "HolySpirit.html", type: "worship" },
+    { title: "Hosanna", file: "Hosanna.html", type: "worship" },
+    { title: "I Offer My Life", file: "IOfferMyLife.html", type: "worship" },
+    { title: "I Speak Jesus", file: "ISpeakJesus.html", type: "worship" },
+    { title: "I Surrender", file: "ISurrender.html", type: "worship" },
+    { title: "I Surrender All", file: "ISurrenderAll.html", type: "worship" },
+    { title: "Jireh", file: "Jireh.html", type: "worship" },
+    { title: "King Of Kings", file: "KingOfKing.html", type: "worship" },
+    { title: "Living Hope", file: "LivingHope.html", type: "worship" },
+    { title: "Lord I Need You", file: "LordINeedYou.html", type: "worship" },
+    { title: "Make Room", file: "MakeRoom.html", type: "worship" },
+    { title: "No Longer Slaves", file: "NoLongerSlaves.html", type: "worship" },
+    { title: "No Turning Back", file: "NoTurningBack.html", type: "worship" },
+    { title: "Nothing Else", file: "NothingElse.html", type: "worship" },
+    { title: "O Come To The Altar", file: "OComeToTheAltar.html", type: "worship" },
+    { title: "Oceans", file: "Oceans.html", type: "worship" },
+    { title: "One Day At A Time", file: "OneDayAtATime.html", type: "worship" },
+    { title: "Open The Eyes Of My Heart", file: "OpenTheEyesOfMyHeart.html", type: "worship" },
+    { title: "Raise A Hallelujah", file: "RaiseAHallelujah.html", type: "worship" },
+    { title: "Reckless Love", file: "RecklessLove.html", type: "worship" },
+    { title: "Refiner", file: "Refiner.html", type: "worship" },
+    { title: "Same God", file: "SameGod.html", type: "worship" },
+    { title: "Shout To The Lord", file: "ShoutToTheLord.html", type: "worship" },
+    { title: "Spirit Lead Me", file: "SpiritLeadMe.html", type: "worship" },
+    { title: "Still", file: "Still.html", type: "worship" },
+    { title: "The Blessing", file: "TheBlessing.html", type: "worship" },
+    { title: "The Heart Of Worship", file: "TheHeartOfWorship.html", type: "worship" },
+    { title: "Touch Of Heaven", file: "TouchOfHeaven.html", type: "worship" },
+    { title: "Tremble", file: "Tremble.html", type: "worship" },
+    { title: "Trust In God", file: "TrustInGod.html", type: "worship" },
+    { title: "Way Maker", file: "WayMaker.html", type: "worship" },
+    { title: "We Fall Down", file: "WeFallDown.html", type: "worship" },
+    { title: "What A Beautiful Name", file: "WhatABeautifulName.html", type: "worship" },
+    { title: "Who Am I", file: "WhoAmI.html", type: "worship" },
+    { title: "Who You Say I Am", file: "WhoYouSayIAm.html", type: "worship" },
+    { title: "Worthy", file: "Worthy.html", type: "worship" },
+    { title: "10000 Reasons", file: "10000Reasons.html", type: "worship" },
+    { title: "Amazing Grace", file: "AmazingGrace.html", type: "worship" },
+    { title: "Our Father-Bethel", file: "OurFahther.html", type: "worship" },
+    { title: "You Raise Me Up", file: "YouRaiseMeUp.html", type: "worship" },
+    { title: "How Great Is Our God", file: "HowGreatIsOurGod.html", type: "worship" },
+    { title: "How Great Is Thou Art", file: "HowGreatIsThouArt.html", type: "worship" },
+    { title: "Worthy Is The Lamb", file: "WorthyIsTheLamb.html", type: "worship" },
+
+    // praise songs
+    { title: "Joyful", file: "JoyFul.html", type: "praise" },
+    { title: "Tribes", file: "Tribes.html", type: "praise" },
+    { title: "Joy Of The Lord", file: "JoyOfTheLord.html", type: "praise" },
+    { title: "Joy To The World", file: "JoyToTheWorld.html", type: "praise" },
+    { title: "Let Everything That Has Breath", file: "LetEverythingThatHasBreath.html", type: "praise" },
+    { title: "Let Go", file: "LetGo.html", type: "praise" },
+    { title: "I Will Sing", file: "IWillSing.html", type: "praise" },
+    { title: "Praise", file: "Praise.html", type: "praise" },
+    { title: "Lion", file: "Lion.html", type: "praise" },
+    { title: "Lion And The Lamb", file: "LionAndTheLamb.html", type: "praise" },
+    { title: "Lord Lift Your Name On High", file: "LordLiftYourNameOnHigh.html", type: "praise" },
+    { title: "My Testimony", file: "MyTestimony.html", type: "praise" },
+    { title: "Not Today", file: "NotToday.html", type: "praise" },
+    { title: "One Way", file: "OneWay.html", type: "praise" },
+    { title: "Only Way", file: "OnlyWay.html", type: "praise" },
+    { title: "Open Up The Heavens", file: "OpenUpTheHeavens.html", type: "praise" },
+    { title: "Salvation Is Here", file: "SalvationIsHere.html", type: "praise" },
+    { title: "Sing Sing Sing", file: "SingSingSing.html", type: "praise" },
+    { title: "Sing To The King", file: "SingToTheKing.html", type: "praise" },
+    { title: "This Is Amazing Grace", file: "ThisIsAmazingGrace.html", type: "praise" },
+    { title: "This Is The Day", file: "ThisIsTheDay.html", type: "praise" },
+    { title: "Trading My Sorrows", file: "TradingMySorrows.html", type: "praise" },
+    { title: "Turn It Up", file: "TurnItUp.html", type: "praise" },
+    { title: "We Want To See Jesus Lifted High", file: "WeWantToSeeJesusLiftedHigh.html", type: "praise" },
+    { title: "You Are Good", file: "YouAreGood.html", type: "praise" },
+    { title: "Your Love Never Fails", file: "YourLoveNeverFails.html", type: "praise" },
+    { title: "Alive", file: "Alive.html", type: "praise" },
+    { title: "Alive In Us", file: "AliveInUs.html", type: "praise" },
+    { title: "All The Earth Will Sing Your Praises", file: "AllTheEarthWillSingYourPraises.html", type: "praise" },
+    { title: "Blessed Be Your Name", file: "BlessedBeYourName.html", type: "praise" },
+    { title: "Come Now Is The Time To Worship", file: "ComeNowIsTheTimeToWorship.html", type: "praise" },
+    { title: "Days Of Elijah", file: "DaysOfElijah.html", type: "praise" },
+    { title: "Echo", file: "Echo.html", type: "praise" },
+    { title: "Endless Praise", file: "EndlessPraise.html", type: "praise" },
+    { title: "Every Move I Make", file: "EveryMoveIMake.html", type: "praise" },
+    { title: "Every Praise", file: "EveryPraise.html", type: "praise" },
+    { title: "Fire Fall Down", file: "FireFallDown.html", type: "praise" },
+    { title: "Forever", file: "Forever.html", type: "praise" },
+    { title: "Free To Dance", file: "FreeToDance.html", type: "praise" },
+    { title: "Freedom", file: "Freedom.html", type: "praise" },
+    { title: "Glorious Day", file: "GloriousDay.html", type: "praise" },
+    { title: "God Is Able", file: "GodIsAble.html", type: "praise" },
+    { title: "God's Good All The Time", file: "GodsGoodAllTheTime.html", type: "praise" },
+    { title: "God So Love", file: "GodSoLove.html", type: "praise" },
+    { title: "Great Things", file: "GreatThings.html", type: "praise" },
+    { title: "Happy Day", file: "HappyDay.html", type: "praise" },
+    { title: "He Has Made Me Glad", file: "HeHasMadeMeGlad.html", type: "praise" },
+    { title: "House Of The Lord", file: "HouseOfTheLord.html", type: "praise" },
+    { title: "I Thank God", file: "IThankGod.html", type: "praise" },
+    { title: "I Will Enter His Gates", file: "IWillEnterHisGates.html", type: "praise" },
+    { title: "My Redeemer Lives", file: "MyRedeemerLives.html", type: "praise" },
+    { title: "Nothing Is Impossible", file: "NothingIsImpossible.html", type: "praise" },
+    { title: "O Praise The Name ", file: "OPraiseTheName.html", type: "praise" }
+];
+// Insert into lists
+const praiseList = document.getElementById("praiseList");
+const worshipList = document.getElementById("worshipList");
+
+songs.forEach(song => {
+    let li = document.createElement("li");
+    li.className = "p-3 bg-white border border-sky-200 rounded-lg cursor-pointer hover:bg-sky-50 hover:border-sky-300 transition-all duration-200 shadow-sm";
+    li.textContent = song.title;
+    li.onclick = () => window.location.href = song.file;
+
+    if (song.type === "worship") worshipList.appendChild(li);
+    else praiseList.appendChild(li);
+});
+
+// Show/hide functionality
+document.getElementById("showWorship").addEventListener("click", () => {
+    const worshipContainer = document.getElementById("worshipContainer");
+    worshipContainer.classList.toggle("hidden");
+    document.getElementById("praiseContainer").classList.add("hidden");
+});
+
+document.getElementById("showPraise").addEventListener("click", () => {
+    const praiseContainer = document.getElementById("praiseContainer");
+    praiseContainer.classList.toggle("hidden");
+    document.getElementById("worshipContainer").classList.add("hidden");
+});
+
+// SEARCH FUNCTION
+document.getElementById("searchInput").addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    const results = document.getElementById("searchResults");
+    results.innerHTML = "";
+
+    if (query.trim() === "") return;
+
+    const filtered = songs.filter(s => s.title.toLowerCase().includes(query));
+
+    filtered.forEach(song => {
+        let div = document.createElement("div");
+        div.className = "p-3 bg-white border border-sky-200 rounded-lg mb-2 cursor-pointer hover:bg-sky-50 hover:border-sky-300 transition-all duration-200 shadow-sm";
+        div.textContent = song.title;
+        div.onclick = () => window.location.href = song.file;
+        results.appendChild(div);
+    });
+});
+</script>
+
+</body>
+</html>
