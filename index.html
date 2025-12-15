@@ -80,23 +80,31 @@
     <div class="max-w-3xl mx-auto px-4 py-10 text-center">
 
         <!-- Bible Verse Carousel -->
-        <div id="bibleVerse" class="min-h-[120px] flex flex-col items-center justify-center">
-            <div class="verse-container relative">
-                <p class="text-sky-700 mb-2 italic">
-                    Come, let us bow down in worship. <br>
-                    Let us kneel before the Lord our Maker. <br>
-                    He is our God, and we are His people.
-                </p>
-                <p class="text-sky-600 mb-4 italic">
-                    — Psalm 95:6-7
-                </p>
+        <div id="bibleVerse" class="min-h-[120px] flex flex-col items-center justify-center overflow-hidden relative">
+            <div class="verse-container relative w-full">
+                <!-- Previous button -->
+                <button id="prevVerse" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white/70 text-sky-700 rounded-full shadow-md hover:bg-white hover:text-sky-800 transition-all duration-200 -ml-4 md:-ml-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <!-- Next button -->
+                <button id="nextVerse" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white/70 text-sky-700 rounded-full shadow-md hover:bg-white hover:text-sky-800 transition-all duration-200 -mr-4 md:-mr-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <!-- Verse slides container -->
+                <div id="verseSlides" class="flex transition-transform duration-500 ease-in-out">
+                    <!-- Slides will be inserted here by JavaScript -->
+                </div>
             </div>
 
             <!-- Navigation Dots -->
-            <div class="flex justify-center space-x-2 mt-2">
-                <button class="verse-dot w-2 h-2 bg-sky-400 rounded-full" data-index="0"></button>
-                <button class="verse-dot w-2 h-2 bg-sky-200 rounded-full" data-index="1"></button>
-                <button class="verse-dot w-2 h-2 bg-sky-200 rounded-full" data-index="2"></button>
+            <div id="dotsContainer" class="flex justify-center space-x-2 mt-4">
+                <!-- Dots will be inserted here by JavaScript -->
             </div>
         </div>
 
@@ -142,21 +150,113 @@ const bibleVerses = [
 ];
 
 let currentVerseIndex = 0;
-const verseContainer = document.querySelector('.verse-container');
-const dots = document.querySelectorAll('.verse-dot');
+let autoChangeInterval;
 
-function showVerse(index) {
+function initCarousel() {
+    const verseContainer = document.getElementById('verseSlides');
+    const dotsContainer = document.getElementById('dotsContainer');
+
+    // Clear existing content
+    verseContainer.innerHTML = '';
+    dotsContainer.innerHTML = '';
+
+    // Create slides
+    bibleVerses.forEach((verse, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'min-w-full px-4';
+        slide.innerHTML = `
+            <p class="text-sky-700 mb-2 italic">${verse.text}</p>
+            <p class="text-sky-600 mb-4 italic">${verse.reference}</p>
+        `;
+        verseContainer.appendChild(slide);
+    });
+
+    // Create dots
+    bibleVerses.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.className = `verse-dot w-3 h-3 rounded-full transition-all duration-300 ${index === 0 ? 'bg-sky-400' : 'bg-sky-200'}`;
+        dot.setAttribute('data-index', index);
+        dot.addEventListener('click', () => {
+            goToVerse(index);
+            resetAutoChange();
+        });
+        dotsContainer.appendChild(dot);
+    });
+
+    // Add event listeners for navigation buttons
+    document.getElementById('prevVerse').addEventListener('click', () => {
+        showPrevVerse();
+        resetAutoChange();
+    });
+
+    document.getElementById('nextVerse').addEventListener('click', () => {
+        showNextVerse();
+        resetAutoChange();
+    });
+
+    // Add touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const bibleVerseElement = document.getElementById('bibleVerse');
+
+    bibleVerseElement.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    bibleVerseElement.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left - next verse
+                showNextVerse();
+            } else {
+                // Swipe right - previous verse
+                showPrevVerse();
+            }
+            resetAutoChange();
+        }
+    }
+
+    // Update initial position
+    updateCarousel();
+
+    // Start auto-change
+    startAutoChange();
+}
+
+function goToVerse(index) {
     currentVerseIndex = index;
-    const verse = bibleVerses[currentVerseIndex];
+    updateCarousel();
+}
 
-    verseContainer.innerHTML = `
-        <p class="text-sky-700 mb-2 italic">${verse.text}</p>
-        <p class="text-sky-600 mb-4 italic">${verse.reference}</p>
-    `;
+function showPrevVerse() {
+    currentVerseIndex = (currentVerseIndex - 1 + bibleVerses.length) % bibleVerses.length;
+    updateCarousel();
+}
+
+function showNextVerse() {
+    currentVerseIndex = (currentVerseIndex + 1) % bibleVerses.length;
+    updateCarousel();
+}
+
+function updateCarousel() {
+    const verseContainer = document.getElementById('verseSlides');
+    const dots = document.querySelectorAll('.verse-dot');
+
+    // Update slide position
+    verseContainer.style.transform = `translateX(-${currentVerseIndex * 100}%)`;
 
     // Update dots
-    dots.forEach((dot, i) => {
-        if (i === currentVerseIndex) {
+    dots.forEach((dot, index) => {
+        if (index === currentVerseIndex) {
             dot.classList.remove('bg-sky-200');
             dot.classList.add('bg-sky-400');
         } else {
@@ -166,20 +266,17 @@ function showVerse(index) {
     });
 }
 
-function showNextVerse() {
-    const nextIndex = (currentVerseIndex + 1) % bibleVerses.length;
-    showVerse(nextIndex);
+function startAutoChange() {
+    autoChangeInterval = setInterval(showNextVerse, 30000); // 30 seconds
 }
 
-// Add click events to dots
-dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-        showVerse(parseInt(dot.getAttribute('data-index')));
-    });
-});
+function resetAutoChange() {
+    clearInterval(autoChangeInterval);
+    startAutoChange();
+}
 
-// Change verse every 30 seconds (30000 milliseconds)
-setInterval(showNextVerse, 30000);
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initCarousel);
 </script>
 
 <script>
@@ -213,6 +310,7 @@ const songs = [
     { title: "Holy Forever", file: "HolyForever.html", type: "worship" },
     { title: "Holy Spirit", file: "HolySpirit.html", type: "worship" },
     { title: "Hosanna", file: "Hosanna.html", type: "worship" },
+    { title: "Silent Night", file: "SilentNight.html", type: "worship" },
     { title: "I Offer My Life", file: "IOfferMyLife.html", type: "worship" },
     { title: "I Speak Jesus", file: "ISpeakJesus.html", type: "worship" },
     { title: "I Surrender", file: "ISurrender.html", type: "worship" },
